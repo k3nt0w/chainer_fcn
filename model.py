@@ -8,7 +8,7 @@ from chainer import serializers
 from chainer import Variable
 
 class FCN(chainer.Chain):
-    def __init__(self, n_class=21, flag=False):
+    def __init__(self, n_class=21, gpu_flag=False, pretrained=False):
         super(FCN, self).__init__(
             pool3=L.Convolution2D(256, n_class, 1, stride=1, pad=0),
             pool4=L.Convolution2D(512, n_class, 1, stride=1, pad=0),
@@ -20,8 +20,10 @@ class FCN(chainer.Chain):
         )
         self.train = False
         self.vgg16 = VGG()
-        if flag:
+        if pretrained:
             serializers.load_npz('vgg16.model', self.vgg16)
+        if gpu_flag:
+            self.vgg16.to_gpu()
 
     def calc(self, x, test=False):
         p3,p4,p5 = self.vgg16(x)

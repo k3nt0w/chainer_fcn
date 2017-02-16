@@ -19,9 +19,10 @@ parser.add_argument('--clopsize', "-s", default=256, type=int)
 args = parser.parse_args()
 
 img_name = args.image_path.split("/")[-1].split(".")[0]
+gpu_flag = True if args.gpu > 0 else False
 
 color_map = make_color_map()
-model = FCN()
+model = FCN(n_class=args.classes, gpu_flag=gpu_flag)
 serializers.load_npz('weight/chainer_fcn.weight', model)
 
 o = load_data(args.image_path, crop=args.clop, size=args.clopsize, mode="predict")

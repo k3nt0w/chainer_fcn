@@ -42,8 +42,9 @@ with open(train_txt,"r") as f:
 names = [l.rstrip('\n') for l in ls]
 n_data = len(names)
 n_iter = n_data // batchsize
+gpu_flag = True if args.gpu > 0 else False
 
-model = FCN(n_class)
+model = FCN(n_class, gpu_flag=gpu_flag)
 
 if args.initmodel:
     serializers.load_npz(args.initmodel, model)

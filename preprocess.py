@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 
-def load_data(path, crop=True, size=None, mode="label"):
+def load_data(path, crop=True, size=None, mode="label", xp=np):
     img = Image.open(path)
     if crop:
         w,h = img.size
@@ -16,13 +16,13 @@ def load_data(path, crop=True, size=None, mode="label"):
         img = img.crop((int((w-size)*0.5), int((h-size)*0.5), int((w+size)*0.5), int((h+size)*0.5)))
 
     if mode=="label":
-        y = np.asarray(img, dtype=np.int32)
+        y = xp.asarray(img, dtype=xp.int32)
         mask = y == 255
         y[mask] = -1
         return y
 
     elif mode=="data":
-        x = np.asarray(img, dtype=np.float32).transpose(2, 0, 1)
+        x = xp.asarray(img, dtype=xp.float32).transpose(2, 0, 1)
         #x -= 120
         return x
 

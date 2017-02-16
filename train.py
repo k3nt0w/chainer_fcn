@@ -77,13 +77,9 @@ for epoch in range(1, n_epoch+1):
             name = names[i*batchsize + j]
             xpath = train_dataset+name+".jpg"
             ypath = target_dataset+name+".png"
-            x[j] = load_data(xpath, crop=True, size=256, mode="data")
-            y[j] = load_data(ypath, crop=True, size=256, mode="label")
+            x[j] = load_data(xpath, crop=True, size=256, mode="data", xp=xp)
+            y[j] = load_data(ypath, crop=True, size=256, mode="label", xp=xp)
 
-        if args.gpu > 0:
-            x.to_gpu()
-            y.to_gpu()
-            
         x = Variable(x)
         y = Variable(y)
         loss = model(x, y, train=True)

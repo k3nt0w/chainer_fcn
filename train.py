@@ -53,6 +53,8 @@ if args.gpu >= 0:
     chainer.cuda.get_device(args.gpu).use()
     model.to_gpu()
 
+xp = np if args.gpu < 0 else cuda.cupy
+
 # Setup optimizer parameters.
 optimizer = optimizers.Adam(alpha=args.lr)
 optimizer.setup(model)
@@ -69,8 +71,8 @@ for epoch in range(1, n_epoch+1):
         model.zerograds()
         indices = range(i * batchsize, (i+1) * batchsize)
 
-        x = np.zeros((batchsize, 3, image_size, image_size), dtype=np.float32)
-        y = np.zeros((batchsize, image_size, image_size), dtype=np.int32)
+        x = xp.zeros((batchsize, 3, image_size, image_size), dtype=np.float32)
+        y = xp.zeros((batchsize, image_size, image_size), dtype=np.int32)
         for j in range(batchsize):
             name = names[i*batchsize + j]
             xpath = train_dataset+name+".jpg"
@@ -78,6 +80,10 @@ for epoch in range(1, n_epoch+1):
             x[j] = load_data(xpath, crop=True, size=256, mode="data")
             y[j] = load_data(ypath, crop=True, size=256, mode="label")
 
+        if args.gpu > 0:
+            x.to_gpu()
+            y.to_gpu()
+            
         x = Variable(x)
         y = Variable(y)
         loss = model(x, y, train=True)

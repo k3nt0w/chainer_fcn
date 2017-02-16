@@ -23,7 +23,7 @@ def load_data(path, crop=True, size=None, mode="label"):
 
     elif mode=="data":
         x = np.asarray(img, dtype=np.float32).transpose(2, 0, 1)
-        x -= 120
+        #x -= 120
         return x
 
     elif mode=="predict":

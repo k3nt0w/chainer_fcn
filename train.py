@@ -44,6 +44,7 @@ n_data = len(names)
 n_iter = n_data // batchsize
 
 model = FCN(n_class)
+
 if args.initmodel:
     serializers.load_npz(args.initmodel, model)
     print("Load initial weight")

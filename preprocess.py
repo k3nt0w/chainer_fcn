@@ -17,8 +17,8 @@ def load_data(path, crop=True, size=None, mode="label", xp=np):
 
     if mode=="label":
         y = xp.asarray(img, dtype=xp.int32)
-        mask = (y == 255)
-        mask = mask.astype(xp.int32)
+        mask = y == 255
+        #mask = mask.astype(xp.int32)
         y[mask] = -1
         return y
 

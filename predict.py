@@ -3,6 +3,7 @@ import numpy as np
 from PIL import Image
 import os
 import argparse
+import cv2
 
 from model import FCN
 from preprocess import load_data
@@ -35,6 +36,7 @@ dst = np.ones((row, col, 3))
 for i in range(21):
     dst[pred == i] = color_map[i]
 img = Image.fromarray(np.uint8(dst))
+
 b,g,r = img.split()
 img = Image.merge("RGB", (r, g, b))
 
@@ -47,8 +49,20 @@ for x in range(w):
            (pixel[0] == 255 and pixel[1] == 255 and pixel[2] == 255):
             continue
         trans.putpixel((x, y), pixel)
-o.paste(trans, (0,0), trans)
+#o.paste(trans, (0,0), trans)
+
 
 if not os.path.exists("out"):
     os.mkdir("out")
-o.save("out/pred_{}.png".format(img_name))
+o.save("out/original.jpg")
+trans.save("out/pred.png")
+
+o = cv2.imread("out/original.jpg", 1)
+p = cv2.imread("out/pred.png", 1)
+
+pred = cv2.addWeighted(o, 0.6, p, 0.4, 0.0)
+
+cv2.imwrite("out/pred_{}.png".format(img_name), pred)
+
+os.remove("out/original.jpg")
+os.remove("out/pred.png")

@@ -25,10 +25,13 @@ $ pyton predict.py -g <gpu:id> -i <path to image> -w <path to weight>
 ## Example
 
 + person
+
 ![person](https://raw.githubusercontent.com/k3nt0w/chainer_fcn/master/out/pred_2009_005056.png)
 
 + horse
+
 ![horse](https://raw.githubusercontent.com/k3nt0w/chainer_fcn/master/out/pred_2010_004856.png)
 
 + bus
+  
 ![person](https://raw.githubusercontent.com/k3nt0w/chainer_fcn/master/out/pred_2011_000969.png)
